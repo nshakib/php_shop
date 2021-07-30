@@ -248,6 +248,42 @@
         $result = $this->db->select($query);
         return $result;
     }
+
+    public function latestFromIphone()
+    {
+        $query = "SELECT * FROM tbl_product where brandId = '3' order by productId desc LIMIT 1";
+        $result = $this->db->select($query);
+        return $result;
+    }
+
+    public function latestFromSamsung()
+    {
+        $query = "SELECT * FROM tbl_product where brandId = '2' order by productId desc LIMIT 1";
+        $result = $this->db->select($query);
+        return $result;
+    }
+
+    public function latestFromAcer()
+    {
+        $query = "SELECT * FROM tbl_product where brandId = '1' order by productId desc LIMIT 1";
+        $result = $this->db->select($query);
+        return $result;
+    }
+    public function latestFromCanon()
+    {
+        $query = "SELECT * FROM tbl_product where brandId = '5' order by productId desc LIMIT 1";
+        $result = $this->db->select($query);
+        return $result;
+    }
+
+    public function productByCat($id)
+    {
+        $catId  = mysqli_real_escape_string($this->db->link, $id);
+
+        $query  = "SELECT * FROM tbl_product WHERE catId = '$catId'";
+        $result = $this->db->select($query);
+        return $result;
+    }
 }
 
 ?>

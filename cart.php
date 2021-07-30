@@ -12,6 +12,18 @@
 		$cartId = $_POST['cartId'];
 		$quantity = $_POST['quantity'];
 		$updateCart = $ct->updateCartQuantity($quantity, $cartId);
+
+		if($quantity<=0)
+		{
+			$delProduct = $ct->delProductByCart($cartId);
+		}
+	}
+?>
+
+<?php 
+	if(!isset($_GET['id']))
+	{
+		echo "<meta http-equiv='refresh' content='0;URL=?id=live' />";
 	}
 ?>
  <div class="main">
@@ -47,6 +59,7 @@
 								{
 									$i= 0;
 									$sum=0;
+									$qty =0;
 									while($result = $getPro->fetch_assoc())
 									{
 										$i++;
@@ -69,11 +82,19 @@
 								<td><a onclick=" return confirm('Are sure to Delete!')" href="?delpro=<?php echo $result['cartId'] ?>">X</a></td>
 							</tr>
 							<?php
+								$qty = $qty+$result['quantity'] ;
 								$sum = $sum+$total; 
+								Session::set('qty',$qty);
+								Session::set('sum',$sum);
 							?>
 							<?php }}?>
 							
 						</table>
+						<?php
+						$getData = $ct->checkTableCart();
+						if($getData)
+						{ 
+						?>
 						<table style="float:right;text-align:left;" width="40%">
 							<tr>
 								<th>Sub Total : </th>
@@ -92,6 +113,7 @@
 								?></td>
 							</tr>
 					   </table>
+					   <?php }else{ header('Location:index.php');}?>
 					</div>
 					<div class="shopping">
 						<div class="shopleft">

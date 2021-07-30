@@ -9,10 +9,12 @@
 	});
 
 
-	$db = new Database();
-	$fm = new Format();
-	$pd = new Product();
-	$ct = new Cart();
+	$db  = new Database();
+	$fm  = new Format();
+	$pd  = new Product();
+	$cat = new Category();
+	$ct  = new Cart();
+	$cmr = new Customer();
  ?>
 <?php
   header("Cache-Control: no-cache, must-revalidate");
@@ -59,7 +61,19 @@
 					<div class="cart">
 						<a href="#" title="View my shopping cart" rel="nofollow">
 								<span class="cart_title">Cart</span>
-								<span class="no_product">(empty)</span>
+								<span class="no_product">
+									<?php
+										$getData = $ct->checkTableCart();
+										if($getData)
+										{
+										$qty = Session::get('qty');
+										$sum = Session::get('sum');
+										echo "$".$sum. " | Qty: ".$qty;
+										}else{
+											echo "(Empty)";
+										}
+									?>
+								</span>
 							</a>
 						</div>
 			      </div>

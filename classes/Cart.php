@@ -68,8 +68,7 @@ class Cart{
             $update_row = $this->db->update($query);
             
             if($update_row){
-                $msg = "<span class='success'>Quantity updated successfully.</span>";
-                return $msg;
+                header('Location:cart.php');
             }else{
                 $msg = "<span class='error'>Quantity not updated!.</span>";
                 return $msg;
@@ -91,5 +90,12 @@ class Cart{
         }
     }
 
+    public function checkTableCart()
+    {
+        $sId = session_id();
+        $query = "SELECT * FROM tbl_cart where sId = '$sId'";
+        $result = $this->db->select($query);
+        return $result;
+    }
 }
 ?>
