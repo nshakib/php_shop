@@ -1,17 +1,30 @@
 <?php include "inc/header.php";?>
 
+<?php 
+	$login = Session::get("custLogin");
+	if($login == true)
+	{
+		header("Location:order.php");
+	}
+
+?>
 <?php
-			if ($_SERVER["REQUEST_METHOD"] == 'POST' && isset($_POST['login'])) {
-			// $customerReg = $_POST['quantity'];
-			$customerLogin = $cmr->customerLogin($_POST);
-			}
-		?>
+	if ($_SERVER["REQUEST_METHOD"] == 'POST' && isset($_POST['login'])) {
+	// $customerReg = $_POST['quantity'];
+	$customerLogin = $cmr->customerLogin($_POST);
+	}  
+?>
  <div class="main">
     <div class="content">
     	 <div class="login_panel">
+		 	<?php
+				if (isset($customerLogin)) {
+					echo $customerLogin;
+				}
+			?>
         	<h3>Existing Customers</h3>
         	<p>Sign in with the form below.</p>
-        	<form action="" method="get" id="member">
+        	<form action="" method="post" id="member">
                 	<input name="email" placeholder="Email" type="text">
                     <input name="pass" type="password" placeholder="Password" >
 					<div class="buttons"><div><button class="grey" name="login">Sign In</button></div>
