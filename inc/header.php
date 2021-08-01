@@ -59,7 +59,7 @@
 			    </div>
 			    <div class="shopping_cart">
 					<div class="cart">
-						<a href="#" title="View my shopping cart" rel="nofollow">
+						<a href="cart.php" title="View my shopping cart" rel="nofollow">
 								<span class="cart_title">Cart</span>
 								<span class="no_product">
 									<?php
@@ -99,17 +99,33 @@
 	 </div>
 	 <div class="clear"></div>
  </div>
+ <!-- Menu -->
 <div class="menu">
 	<ul id="dc_mega-menu-orange" class="dc_mm-orange">
 	  <li><a href="index.php">Home</a></li>
 	  <li><a href="products.php">Products</a> </li>
 	  <li><a href="topbrands.php">Top Brands</a></li>
+	  <!-- check cart and pay -->
 	  <?php
 	  $chkCart = $ct->checkTableCart();
 	  if($chkCart)
 	  {?>
 		<li><a href="cart.php">Cart</a></li>
+		<li><a href="payment.php">Payment</a></li>
 	  <?php }?>
+	  <!-- end -->
+
+	  <!-- order details -->
+	  <?php
+	  $cmeId = Session::get("cmrId");
+	  $chkOrder = $ct->checkOrder($cmeId);
+	  if($chkOrder)
+	  {?>
+		<li><a href="orderdetails.php">Order Details</a></li>
+	  <?php }?>
+	  <!-- order details end -->
+
+
 	  <li><a href="contact.php">Contact</a> </li>
 	  <?php
 	  $login = Session::get("custLogin");
