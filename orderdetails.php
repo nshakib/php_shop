@@ -7,6 +7,15 @@
 	}
 
 ?>
+<?php 
+	if(isset($_GET['customerId']))
+	{
+		$id = $_GET['customerId'];
+		$time = $_GET['time'];
+		$price = $_GET['price'];
+		$cinfirm = $ct->productShiftedConfirm($id,$time,$price);
+	}
+?>
 <style>
     /* .tblone tr td{text-align: justify;} */
 </style>
@@ -41,24 +50,28 @@
 								<td><?php echo $result['productName']?></td>
 								<td><img src="admin/<?php echo $result['images']?>" alt=""/></td>
 								<td><?php echo $result['quantity']?></td>
-								<td><?php
-									$total= $result['price'];
-									echo $total ;?></td>
+								<td><?php echo $result['price'];?></td>
                                 <td><?php echo $fm->formatDate($result['date'])?></td>
                                 <td>
                                     <?php
                                     if($result['status']=='0')
                                     {
                                         echo "Pending";
-                                    }else{
-                                        echo "Shifted";
-                                    }
-                                    ?>
+                                    }elseif($result['status']=='1'){
+										echo "Shifted";
+									}
+                                    else{
+										echo "Complete";
+									}?>
                                 </td>
                                 <?php
-                                    if($result['status']=='1'){?>
-                                    <td><a onclick=" return confirm('Are sure to Delete!')" href="?delpro=<?php echo $result['cartId'] ?>">X</a></td>
-                                    <?php }else{ ?>
+									if($result['status']=='1'){?>
+										<td><a href="?customerId=<?php echo $cmrId;?>
+										&price=<?php echo $result['price'];?>&time=<?php echo $result['date'];?>">Confirm</a></td>
+                                    <?php }
+                                    elseif($result['status']=='2'){?>
+										<td>OK</td>
+                                    <?php }elseif($result['status']=='0'){ ?>
                                         <td>N/A</td>
                                     <?php }?>
 							</tr>
@@ -70,3 +83,6 @@
     </div>
 </div>
 <?php include("inc/footer.php"); ?>
+
+
+<td><a onclick=" return confirm('Are sure to Delete!')" href="?delpro=<?php echo $result['cartId'] ?>">X</a></td>

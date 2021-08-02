@@ -1,16 +1,24 @@
 <?php include "inc/header.php";?>
 
-<?php if (!isset($_GET['proid']) || $_GET['proid'] == null) {
-    echo "<script>window.location = '404.php';</script>";
-} else {
-    $id = preg_replace('/[^-a-zA-Z0-9_]/', '', $_GET['proid']);
-}
+<?php 
+	if (isset($_GET['proid']))
+	{
+    	$id = preg_replace('/[^-a-zA-Z0-9_]/', '', $_GET['proid']);
+	}
 
+	if ($_SERVER["REQUEST_METHOD"] == 'POST' && isset($_POST['submit'])) {
+		$quantity = $_POST['quantity'];
+		$addCart = $ct->addToCart($quantity, $id);
+	}
+?>
 
-if ($_SERVER["REQUEST_METHOD"] == 'POST' && isset($_POST['submit'])) {
-    $quantity = $_POST['quantity'];
-    $addCart = $ct->addToCart($quantity, $id);
-}
+<?php 
+    $cmrId = Session::get("cmrId");
+    if ($_SERVER["REQUEST_METHOD"] == 'POST' && isset($_POST['compare'])) {
+
+		$productId = $_POST['productId'];	
+    	$insertCom = $pd->insertCompareData($productId,$cmrId);
+    }
 ?>
 
  <div class="main">
@@ -46,7 +54,18 @@ if ($getPd) {
 									echo $addCart;
 								}
 							?>
+							<?php
+								if (isset($insertCom)) {
+									echo $insertCom;
+								}
+							?>
 						</span>
+						<div class="add-cart">
+							<form action="" method="POST">
+								<input type="hidden" class="buyfield" name="productId" value="<?php echo $result['productId'] ?>">
+								<input type="submit" class="buysubmit" name="compare" value="Add to Compare"/>
+							</form>
+						</div>
 					</div>
 
 					<div class="product-desc">

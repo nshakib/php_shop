@@ -138,7 +138,7 @@ class Cart{
 
     public function getOrderProduct($cmrId)
     {
-        $query = "SELECT * FROM tbl_order where cmrId = '$cmrId' ORDER BY productId DESC";
+        $query = "SELECT * FROM tbl_order where cmrId = '$cmrId' ORDER BY date DESC";
         $result = $this->db->select($query);
         return $result;
 
@@ -149,6 +149,67 @@ class Cart{
         $query = "SELECT * FROM tbl_order where cmrId = '$cmrId'";
         $result = $this->db->select($query);
         return $result;
+    }
+
+    public function getAllOrderProduct()
+    {
+        $query = "SELECT * FROM tbl_order order by date desc";
+        $result = $this->db->select($query);
+        return $result;
+    }
+
+    public function productShifted($id,$time,$price)
+    {
+        $id     = mysqli_real_escape_string($this->db->link, $id);
+        $time   = mysqli_real_escape_string($this->db->link, $time);
+        $price  = mysqli_real_escape_string($this->db->link, $price);
+
+        $query = "UPDATE tbl_order SET status = '1' WHERE cmrId = '$id' AND date='$time' AND price='$price'";
+            $update_row = $this->db->update($query);
+            
+            if($update_row){
+                $msg = "<span class='success'>Updated successfully!.</span>";
+                return $msg;
+            }else{
+                $msg = "<span class='error'>Not Updated!.</span>";
+                return $msg;
+            }
+    }
+
+    public function delProductShifted($id,$time,$price)
+    {
+        $id     = mysqli_real_escape_string($this->db->link, $id);
+        $time   = mysqli_real_escape_string($this->db->link, $time);
+        $price  = mysqli_real_escape_string($this->db->link, $price);
+
+        $query = "DELETE FROM tbl_order WHERE cmrId = '$id' AND date='$time' AND price='$price'";
+        $delete_row= $this->db->delete($query);
+        if($delete_row){
+            $msg = "<span class='success'>Deleted successfully!.</span>";
+            return $msg;
+        }else{
+            $msg = "<span class='error'>Not deleted!.</span>";
+            return $msg;
+        }
+
+    }
+
+    public function productShiftedConfirm($id,$time,$price)
+    {
+        $id     = mysqli_real_escape_string($this->db->link, $id);
+        $time   = mysqli_real_escape_string($this->db->link, $time);
+        $price  = mysqli_real_escape_string($this->db->link, $price);
+
+        $query = "UPDATE tbl_order SET status = '2' WHERE cmrId = '$id' AND date='$time' AND price='$price'";
+            $update_row = $this->db->update($query);
+            
+            if($update_row){
+                $msg = "<span class='success'>Updated successfully!.</span>";
+                return $msg;
+            }else{
+                $msg = "<span class='error'>Not Updated!.</span>";
+                return $msg;
+            }
     }
 }
 ?>

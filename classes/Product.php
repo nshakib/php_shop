@@ -284,6 +284,51 @@
         $result = $this->db->select($query);
         return $result;
     }
+
+    public function insertCompareData($cmprid, $cmrId)
+    {
+        $cmrId      = mysqli_real_escape_string($this->db->link, $cmrId);
+        $productId  = mysqli_real_escape_string($this->db->link, $cmprid);
+
+        $cquery = "SELECT * FROM tbl_compare WHERE cmrId = '$cmrId' AND productId = '$productId'";
+        $check = $this->db->select($cquery);
+        if ($check) {
+            $msg = "<span class='error'>Product Already Added to Compare.</span>";
+            return $msg;
+        }
+
+        $query = "SELECT * FROM tbl_product where productId = '$productId'";
+        $getPro = $this->db->select($query);
+        if($getPro)
+        {
+            while($result=$getPro->fetch_assoc())
+            {
+                $productId =  $result['productId'];
+                $productName =  $result['productName'];
+                $price =  $result['price'];
+                $image =  $result['images'];
+
+                $query = "INSERT INTO tbl_compare(cmrId,productId, productName,price, images)
+                VALUES('$cmrId', '$productId', '$productName','$price', '$image')";
+                $product_insert= $this->db->insert($query);
+
+                if($product_insert)
+                {
+                    $msg = "<span class='success'>Added To Commpare !</span>";
+                    return $msg;
+                }else{
+                    $msg = "<span class='error'>Not Added !</span>";
+                    return $msg;
+                }
+        }   }
+    }
+
+    public function getComparedData($cmrId)
+    {
+        $cquery = "SELECT * FROM tbl_compare WHERE cmrId = '$cmrId' order by id DESC";
+        $result = $this->db->select($cquery);
+        return $result;
+    }
 }
 
 ?>
