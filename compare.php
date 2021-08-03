@@ -1,5 +1,13 @@
 <?php include("inc/header.php"); ?>
+<!-- Check unauthorize access -->
+<?php 
+	$login = Session::get("custLogin");
+	if($login == false)
+	{
+		header("Location:login.php");
+	}
 
+?>
 <style>
 	table.tblone img{height: 90px;width: 100px;}
 </style>

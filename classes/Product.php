@@ -285,6 +285,27 @@
         return $result;
     }
 
+    // 
+    public function getBrandProductAcer()
+    {
+        $query = "SELECT * FROM tbl_product WHERE brandId = '2' ORDER BY productId DESC LIMIT 4";
+        $result = $this->db->select($query);
+        return $result;
+    }
+    public function getBrandProductSamsung()
+    {
+        $query = "SELECT * FROM tbl_product WHERE brandId = '1' ORDER BY productId DESC LIMIT 4";
+        $result = $this->db->select($query);
+        return $result;
+    }
+    public function getBrandProductCanon()
+    {
+        $query = "SELECT * FROM tbl_product WHERE brandId = '3' ORDER BY productId DESC LIMIT 4";
+        $result = $this->db->select($query);
+        return $result;
+    }
+    // 
+
     public function insertCompareData($cmprid, $cmrId)
     {
         $cmrId      = mysqli_real_escape_string($this->db->link, $cmrId);
