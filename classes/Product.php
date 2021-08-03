@@ -314,7 +314,7 @@
 
                 if($product_insert)
                 {
-                    $msg = "<span class='success'>Added To Commpare !</span>";
+                    $msg = "<span class='success'>Added | Check Commpare Page !</span>";
                     return $msg;
                 }else{
                     $msg = "<span class='error'>Not Added !</span>";
@@ -328,6 +328,55 @@
         $cquery = "SELECT * FROM tbl_compare WHERE cmrId = '$cmrId' order by id DESC";
         $result = $this->db->select($cquery);
         return $result;
+    }
+
+    public function delCompareData($cmrId)
+    {
+        $delquery = "DELETE FROM tbl_compare WHERE cmrId = '$cmrId'";
+        $delData = $this->db->delete($delquery);
+    }
+
+    public function saveWishListData($id,$cmrId)
+    {
+        $wquery = "SELECT * FROM tbl_twlist WHERE cmrId = '$cmrId' AND productId = '$id'";
+        $check = $this->db->select($wquery);
+        if ($check) {
+            $msg = "<span class='error'>Product Already Added to WishList.</span>";
+            return $msg;
+        }
+        
+
+        $pquery = "SELECT * FROM tbl_product where productId = '$id'";
+        $result = $this->db->select($pquery)->fetch_assoc();
+        if ($result) {
+            $productId      = $result['productId'];
+            $productName    = $result['productName'];
+            $price          = $result['price'];
+            $image          = $result['images'];
+
+            $query = "INSERT INTO tbl_twlist(cmrId, productId, productName, price, images) VALUES('$cmrId', '$productId', '$productName', '$price', '$image')";
+            $inserted_row = $this->db->insert($query);
+            if ($inserted_row) {
+                $msg = "<span class='success'>Product Addred! Check Wishlist Page.</span>";
+                return $msg;
+            } else {
+                $msg = "<span class='error'>Product Not Added!</span>";
+                return $msg;
+            }
+        }
+    }
+
+    public function checkWlist($cmrId)
+    {
+        $cquery = "SELECT * FROM tbl_twlist WHERE cmrId = '$cmrId' order by id DESC";
+        $result = $this->db->select($cquery);
+        return $result;
+    }
+
+    public function delWlistData($cmrId, $productId)
+    {
+        $delquery = "DELETE FROM tbl_twlist WHERE cmrId = '$cmrId' AND productId = '$productId'";
+        $delData = $this->db->delete($delquery);
     }
 }
 

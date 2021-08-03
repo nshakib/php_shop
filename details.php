@@ -13,7 +13,7 @@
 ?>
 
 <?php 
-    $cmrId = Session::get("cmrId");
+    
     if ($_SERVER["REQUEST_METHOD"] == 'POST' && isset($_POST['compare'])) {
 
 		$productId = $_POST['productId'];	
@@ -21,6 +21,16 @@
     }
 ?>
 
+<?php 
+    
+    if ($_SERVER["REQUEST_METHOD"] == 'POST' && isset($_POST['wlist'])) {
+	
+    	$saveWlist = $pd->saveWishListData($id,$cmrId);
+    }
+?>	
+ <style>
+	 .mybutton{width: 100px;float: left;margin-right: 50px;}
+ </style>
  <div class="main">
     <div class="content">
     	<div class="section group">
@@ -59,13 +69,32 @@ if ($getPd) {
 									echo $insertCom;
 								}
 							?>
+							<?php
+								if (isset($saveWlist)) {
+									echo $saveWlist;
+								}
+							?>
 						</span>
+						<?php
+							$login = Session::get("custLogin");
+							if($login==true){?> 
+						
 						<div class="add-cart">
-							<form action="" method="POST">
-								<input type="hidden" class="buyfield" name="productId" value="<?php echo $result['productId'] ?>">
-								<input type="submit" class="buysubmit" name="compare" value="Add to Compare"/>
-							</form>
+							<div class="mybutton">
+								<form action="" method="POST">
+									<input type="hidden" class="buyfield" name="productId" value="<?php echo $result['productId'] ?>">
+									<input type="submit" class="buysubmit" name="compare" value="Add to Compare"/>
+								</form>
+							</div>
+
+							<div class="mybutton">
+								<form action="" method="POST">
+									
+									<input type="submit" class="buysubmit" name="wlist" value="Save To List "/>
+								</form>
+							</div>
 						</div>
+						<?php }?>
 					</div>
 
 					<div class="product-desc">
